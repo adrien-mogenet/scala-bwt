@@ -4,7 +4,7 @@ import me.algos.rotation.Rotation
 
 /**
  * Implementation of BurrowsWheeler transform.
- * The Burrows–Wheeler transform (BWT, also called block-sorting compression),
+ * The Burrows-Wheeler transform (BWT, also called block-sorting compression),
  * is an algorithm used in data compression techniques such as bzip2. It was
  * invented by Michael Burrows and David Wheeler in 1994 while working at DEC
  * Systems Research Center in Palo Alto, California.[1] It is based on a
@@ -44,6 +44,20 @@ class BurrowsWheelerCodec {
     val lasts = for (rotation <- matrix)
       yield rotation.last
     pos.toString + lasts.mkString
+  }
+  
+  /**
+   * Decode the input string
+   */
+  def decode(input: String): String = {
+    val lasts = input.toSeq.map(c => String.valueOf(c))
+    for (i <- 0 until input.length()) {
+      input.sortWith((a: Char, b: Char) => a < b)
+      for (j <- 0 until input.length()) {
+
+      }
+    }
+    input
   }
 
   /**
