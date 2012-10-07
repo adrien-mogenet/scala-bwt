@@ -37,27 +37,30 @@ class BurrowsWheelerCodec {
   /**
    * Encode the input string
    */
-  def encode(input: String): String = {
+  def encode(input: String): Pair[String, Int] = {
     val matrix = rotations(input)
       .sortWith((a: String, b: String) => a.compareTo(b) < 0)
     val pos = matrix.indexOf(input)
     val lasts = for (rotation <- matrix)
       yield rotation.last
-    pos.toString + lasts.mkString
+    (lasts.mkString, pos)
   }
   
   /**
    * Decode the input string
    */
-  def decode(input: String): String = {
-    val lasts = input.toSeq.map(c => String.valueOf(c))
-    for (i <- 0 until input.length()) {
-      input.sortWith((a: Char, b: Char) => a < b)
-      for (j <- 0 until input.length()) {
-
-      }
+  def decode(input: String, pos: Int): String = {
+    var matrix = input.toSeq.map(c => "") // init empty Seq of fixed size
+    def merge(input: String, rows: Seq[String]): Seq[String] = {
+      assert(input.length() == rows.size)
+      for (i <- 0 until rows.size)
+        yield input(i) + rows(i)
     }
-    input
+    for (i <- 0 until input.length()) {
+      matrix = merge(input, matrix)
+      matrix = matrix.sortWith((a: String, b: String) => a.compareTo(b) < 0)
+    }
+    matrix(pos)
   }
 
   /**
